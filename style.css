@@ -1,0 +1,1351 @@
+/* ================================
+   GLOBAL
+================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  position: relative;
+  font-family: "Trebuchet MS", "Gill Sans", "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #8f7ad8 0%, #b892eb 46%, #d8adeb 100%);
+  color: #2b2135;
+  transition:
+    background 10s ease-in-out,
+    color 10s ease-in-out;
+}
+
+#page-clip {
+  overflow-x: clip;
+}
+
+body.night {
+  background: linear-gradient(180deg, #201b43 0%, #3c2a63 42%, #6a4177 100%);
+}
+
+::selection {
+  background: rgba(121, 82, 188, 0.22);
+}
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  backdrop-filter: blur(24px) brightness(0.7) saturate(1.3);
+  -webkit-backdrop-filter: blur(24px) brightness(0.7) saturate(1.3);
+  background: rgba(60, 30, 90, 0.55);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 3.5s ease;
+}
+
+body.intro-seen .intro-overlay {
+  display: none;
+}
+
+.intro-overlay .enter-hint {
+  color: rgba(255, 245, 255, 0.88);
+  font-family: "Trebuchet MS", "Gill Sans", "Segoe UI", sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-top: 18px;
+  animation: hintPulse 2.2s ease-in-out infinite;
+  pointer-events: none;
+  text-shadow: 0 0 18px rgba(200, 160, 255, 0.6);
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.intro-overlay.cleared {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* ================================
+   BACKGROUND LAYERS
+================================ */
+
+.cloud-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  transition:
+    opacity 3.5s ease-in-out,
+    filter 3.5s ease-in-out,
+    transform 0.6s ease-in-out;
+}
+
+.cloud-layer-back {
+  z-index: 1;
+}
+
+.cloud-layer-mid {
+  z-index: 3;
+}
+
+.cloud-layer-front {
+  z-index: 5;
+}
+
+.sky-birds {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  transition: opacity 1.5s ease;
+}
+
+.sky-birds-far {
+  z-index: 2;
+}
+
+.sky-birds-close {
+  z-index: 6;
+}
+
+/* ================================
+   CLOUDS
+================================ */
+
+.cloud {
+  position: absolute;
+  opacity: 0.9;
+  will-change: transform;
+  --drift-y-start: 0px;
+  --drift-y-end: 0px;
+  animation-name: cloudDrift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  transition:
+    opacity 2.4s ease-in-out,
+    filter 2.8s ease-in-out;
+}
+
+/* foreground */
+.cloud1 {
+  width: 520px;
+  top: 95px;
+  animation-duration: 190s;
+  animation-delay: -78s;
+  --drift-y-start: -5px;
+  --drift-y-end: 7px;
+  opacity: 0.95;
+  filter: blur(0px);
+}
+
+.cloud4 {
+  width: 360px;
+  top: 560px;
+  animation-duration: 205s;
+  animation-delay: -18s;
+  --drift-y-start: 6px;
+  --drift-y-end: -5px;
+  opacity: 0.92;
+  filter: blur(0px);
+}
+
+.cloud10 {
+  width: 330px;
+  top: 640px;
+  animation-duration: 210s;
+  animation-delay: -122s;
+  --drift-y-start: 5px;
+  --drift-y-end: -4px;
+  opacity: 0.9;
+  filter: blur(0px);
+}
+
+/* midground */
+.cloud2 {
+  width: 390px;
+  top: 220px;
+  animation-duration: 220s;
+  animation-delay: -42s;
+  --drift-y-start: 5px;
+  --drift-y-end: -8px;
+  opacity: 0.65;
+  filter: blur(2px);
+}
+
+.cloud5 {
+  width: 430px;
+  top: 150px;
+  animation-duration: 225s;
+  animation-delay: -132s;
+  --drift-y-start: -4px;
+  --drift-y-end: 9px;
+  opacity: 0.62;
+  filter: blur(2px);
+}
+
+.cloud7 {
+  width: 400px;
+  top: 110px;
+  animation-duration: 230s;
+  animation-delay: -8s;
+  --drift-y-start: -5px;
+  --drift-y-end: 8px;
+  opacity: 0.6;
+  filter: blur(2px);
+}
+
+.cloud11 {
+  width: 370px;
+  top: 260px;
+  animation-duration: 235s;
+  animation-delay: -176s;
+  --drift-y-start: -3px;
+  --drift-y-end: 8px;
+  opacity: 0.58;
+  filter: blur(2px);
+}
+
+/* background */
+.cloud3 {
+  width: 340px;
+  top: 390px;
+  animation-duration: 260s;
+  animation-delay: -24s;
+  --drift-y-start: -14px;
+  --drift-y-end: 12px;
+  opacity: 0.34;
+  filter: blur(4px);
+}
+
+.cloud6 {
+  width: 300px;
+  top: 330px;
+  animation-duration: 270s;
+  animation-delay: -96s;
+  --drift-y-start: 10px;
+  --drift-y-end: -12px;
+  opacity: 0.28;
+  filter: blur(5px);
+}
+
+.cloud8 {
+  width: 280px;
+  top: 250px;
+  animation-duration: 255s;
+  animation-delay: -156s;
+  --drift-y-start: 9px;
+  --drift-y-end: -10px;
+  opacity: 0.32;
+  filter: blur(4px);
+}
+
+.cloud9 {
+  width: 360px;
+  top: 500px;
+  animation-duration: 275s;
+  animation-delay: -208s;
+  --drift-y-start: -12px;
+  --drift-y-end: 10px;
+  opacity: 0.26;
+  filter: blur(5px);
+}
+
+.cloud12 {
+  width: 260px;
+  top: 420px;
+  animation-duration: 250s;
+  animation-delay: -64s;
+  --drift-y-start: 12px;
+  --drift-y-end: -13px;
+  opacity: 0.3;
+  filter: blur(4px);
+}
+
+@keyframes cloudDrift {
+  from {
+    transform: translateX(-140vw) translateY(var(--drift-y-start));
+  }
+  to {
+    transform: translateX(140vw) translateY(var(--drift-y-end));
+  }
+}
+
+body.night .cloud-layer {
+  opacity: 0.34;
+  filter: blur(8px) saturate(0.82) brightness(0.82);
+  transform: scale(1.03);
+}
+
+body.ready:not(.night) .cloud-layer {
+  animation: cloudsReturn 2s cubic-bezier(.2, 1.1, .3, 1);
+}
+
+@keyframes cloudsReturn {
+  0% {
+    opacity: 0.34;
+    filter: blur(8px) saturate(0.82) brightness(0.82);
+    transform: translateY(40px) scale(1.03);
+  }
+  55% {
+    opacity: 0.72;
+    filter: blur(3px) saturate(0.94) brightness(0.92);
+    transform: translateY(-8px) scale(1.015);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0) saturate(1) brightness(1);
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ================================
+   BIRDS
+================================ */
+
+.bird {
+  position: absolute;
+  width: 120px;
+  height: 70px;
+}
+
+.bird img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: none;
+}
+
+.bird img.active {
+  display: block;
+}
+
+.bird-close {
+  left: -160px;
+  width: 26px;
+  height: 16px;
+  animation: flyClose 24s linear infinite;
+  z-index: 3;
+  opacity: 0.95;
+}
+
+.bird-flock {
+  position: absolute;
+  top: 430px;
+  left: -140px;
+  width: 70px;
+  height: 36px;
+  animation: flyFlock 36s linear infinite;
+}
+
+.bird-far {
+  width: 20px;
+  height: 12px;
+  opacity: 0.55;
+  filter: brightness(0) blur(1px);
+}
+
+.bird-far-1 {
+  top: 0;
+  left: 22px;
+}
+
+.bird-far-2 {
+  top: 16px;
+  left: 40px;
+}
+
+.bird-far-3 {
+  top: 16px;
+  left: 4px;
+}
+
+.bird-flock-distant {
+  top: 300px;
+  left: -200px;
+  animation: flyFlock 48s linear infinite;
+}
+
+.bird-far2 {
+  width: 12px;
+  height: 7px;
+  opacity: 0.45;
+  filter: brightness(0) blur(1.4px);
+}
+
+.bird-far2-1 {
+  top: 0;
+  left: 12px;
+}
+
+.bird-far2-2 {
+  top: 10px;
+  left: 22px;
+}
+
+.bird-far2-3 {
+  top: 10px;
+  left: 2px;
+}
+
+@keyframes flyClose {
+  0% {
+    transform: translateX(0) translateY(0) scaleX(1);
+  }
+  25% {
+    transform: translateX(35vw) translateY(-8px) scaleX(1);
+  }
+  50% {
+    transform: translateX(70vw) translateY(6px) scaleX(1);
+  }
+  100% {
+    transform: translateX(120vw) translateY(-4px) scaleX(1);
+  }
+}
+
+@keyframes flyFlock {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(60vw) translateY(-8px);
+  }
+  100% {
+    transform: translateX(120vw) translateY(4px);
+  }
+}
+
+body.night .sky-birds {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* ================================
+   NIGHT BALLOON
+================================ */
+
+.night-balloon-wrap{
+  position: fixed;
+  bottom: -200px;
+  left: 15%;
+  width: 110px;
+  pointer-events: none;
+  z-index: 2;
+  display: none;
+
+  animation: balloonFloat 70s linear infinite;
+}
+
+body.night .night-balloon-wrap{
+  display: block;
+}
+
+.night-balloon,
+.night-balloon-lights{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+}
+
+.night-balloon{
+  opacity: 0.72;
+}
+
+.night-balloon-lights{
+  opacity: 0.9;
+  animation:
+  balloonLightsFlicker 1.6s ease-in-out infinite,
+  balloonLightsTwinkle .32s steps(2) infinite;
+
+  filter: drop-shadow(0 0 5px rgba(255,220,150,0.35));
+}
+
+@keyframes balloonFloat{
+
+  0%{ transform: translateY(0) translateX(0); }
+
+  25%{ transform: translateY(-25vh) translateX(10px); }
+
+  50%{ transform: translateY(-50vh) translateX(-8px); }
+
+  75%{ transform: translateY(-75vh) translateX(12px); }
+
+  100%{ transform: translateY(-120vh) translateX(-5px); }
+
+}
+
+@keyframes balloonLightsFlicker{
+
+  0%{
+    opacity:.5;
+    filter: drop-shadow(0 0 3px rgba(255,210,140,.2));
+  }
+
+  20%{
+    opacity:.95;
+    filter: drop-shadow(0 0 12px rgba(255,235,180,.6));
+  }
+
+  40%{
+    opacity:.65;
+    filter: drop-shadow(0 0 5px rgba(255,215,150,.3));
+  }
+
+  60%{
+    opacity:1;
+    filter: drop-shadow(0 0 16px rgba(255,240,200,.75));
+  }
+
+  80%{
+    opacity:.7;
+    filter: drop-shadow(0 0 7px rgba(255,220,150,.4));
+  }
+
+  100%{
+    opacity:.9;
+    filter: drop-shadow(0 0 14px rgba(255,235,180,.65));
+  }
+}
+
+@keyframes balloonLightsTwinkle{
+  0%{
+    transform: translateZ(0);
+    opacity: .82;
+  }
+
+  25%{
+    opacity: .96;
+  }
+
+  50%{
+    opacity: .72;
+  }
+
+  75%{
+    opacity: 1;
+  }
+
+  100%{
+    opacity: .88;
+  }
+}
+
+/* ================================
+   STARS
+================================ */
+
+.sky-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 1.2s ease,
+    transform 1.2s ease;
+}
+
+.sky-particles::before,
+.sky-particles::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background-repeat: repeat;
+}
+
+.sky-particles::before {
+  background-image:
+    radial-gradient(circle, rgba(255, 214, 245, 0.95) 1.5px, transparent 2px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.75) 1px, transparent 1.6px),
+    radial-gradient(circle, rgba(255, 190, 235, 0.55) 2px, transparent 2.8px);
+  background-size: 180px 180px, 240px 240px, 320px 320px;
+  background-position: 0 0, 40px 70px, 120px 30px;
+  animation: particleFloat 70s linear infinite;
+}
+
+.sky-particles::after {
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.4) 1px, transparent 1.7px),
+    radial-gradient(circle, rgba(255, 210, 245, 0.45) 1.4px, transparent 2px);
+  background-size: 260px 260px, 360px 360px;
+  background-position: 60px 20px, 180px 120px;
+  animation: particleFloat 110s linear infinite;
+  opacity: 0.8;
+}
+
+body.night .sky-particles {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  animation: starsSettle 0.8s cubic-bezier(.34, 1.56, .64, 1) both;
+}
+
+body.ready:not(.night) .sky-particles {
+  animation: starsExit 0.55s cubic-bezier(.55, .06, .68, .19) forwards;
+}
+
+@keyframes particleFloat {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-120px);
+  }
+}
+
+@keyframes starsSettle {
+  0% {
+    opacity: 0;
+    transform: translateY(120px) scale(0.9);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-18px) scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes starsExit {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  35% {
+    opacity: 1;
+    transform: translateY(-14px) scale(1.02);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(95px) scale(0.94);
+  }
+}
+
+/* ================================
+   MOON
+================================ */
+
+.moon {
+  position: fixed;
+  right: 300px;
+  bottom: -200px;
+  width: 135px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(180px);
+  filter:
+    drop-shadow(0 0 25px rgba(255, 235, 180, 0.35))
+    drop-shadow(0 0 60px rgba(255, 200, 120, 0.15));
+}
+
+body.night .moon {
+  opacity: 1;
+  animation:
+    moonRise 0.85s cubic-bezier(.34, 1.56, .64, 1) both,
+    moonFloat 10s ease-in-out infinite alternate 0.9s;
+}
+
+body.ready:not(.night) .moon {
+  animation: moonDrop 0.55s cubic-bezier(.55, .06, .68, .19) forwards;
+}
+
+@keyframes moonRise {
+  0% {
+    opacity: 0;
+    transform: translateY(240px);
+  }
+  72% {
+    opacity: 1;
+    transform: translateY(-942px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-950px);
+  }
+}
+
+@keyframes moonDrop {
+  0% {
+    opacity: 1;
+    transform: translateY(-950px);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-968px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(220px);
+  }
+}
+
+@keyframes moonFloat {
+  from {
+    transform: translateY(-950px) translateX(0);
+  }
+  to {
+    transform: translateY(-942px) translateX(6px);
+  }
+}
+
+/* ================================
+   FIREFLIES
+================================ */
+
+.fireflies {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 7;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
+
+body.night .fireflies {
+  opacity: 1;
+}
+
+.firefly {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 180, 0.9);
+  filter: drop-shadow(0 0 4px rgba(255, 255, 140, 0.8))
+          drop-shadow(0 0 10px rgba(200, 255, 100, 0.5));
+  animation: fireflyFloat var(--fly-duration) ease-in-out infinite,
+             fireflyBlink var(--blink-duration) ease-in-out infinite;
+}
+
+@keyframes fireflyFloat {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(var(--dx1), var(--dy1)); }
+  50%  { transform: translate(var(--dx2), var(--dy2)); }
+  75%  { transform: translate(var(--dx3), var(--dy3)); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes fireflyBlink {
+  0%, 100% { opacity: 0.1; }
+  50%       { opacity: 1; }
+}
+
+
+/* ================================
+   TOGGLE
+================================ */
+
+.day-night-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 20;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #4d3565;
+  background: rgba(255, 248, 244, 0.88);
+  box-shadow:
+    0 10px 24px rgba(58, 36, 78, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(6px);
+  transition:
+    transform 0.2s ease,
+    background 0.4s ease,
+    color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.day-night-toggle:hover {
+  transform: translateY(-2px);
+}
+
+body.night .day-night-toggle {
+  background: rgba(52, 40, 84, 0.88);
+  color: #f7e8ff;
+  box-shadow:
+    0 10px 24px rgba(10, 8, 20, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ================================
+   MAIN LAYOUT
+================================ */
+
+.hero,
+.main-content {
+  position: relative;
+  z-index: 10;
+}
+
+.hero {
+  width: min(1680px, calc(100% - 80px));
+  min-height: 160vh;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  text-align: center;
+}
+
+.main-content {
+  width: min(860px, calc(100% - 36px));
+  margin: 34px auto 80px;
+}
+
+.hero-title-zone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: min(900px, 78vw);
+}
+
+.title-gif {
+  display: block;
+  width: min(900px, 78vw);
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.title-night {
+  display: none;
+}
+
+body.night .title-day {
+  display: none;
+}
+
+body.night .title-night {
+  display: block;
+}
+
+/* ================================
+   SUBTITLE
+================================ */
+
+.subtitle {
+  position: absolute;
+  top: 95%;
+  left: 100px;
+  margin-top: -500px;
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  color: rgba(60,40,80,0.85);
+  opacity: 0;
+  animation:
+    subtitleFade 2s ease 3.5s forwards,
+    textBob 4s ease-in-out infinite 6s;
+  will-change: transform;
+}
+
+body.night .subtitle {
+  color: rgba(255,235,255,0.85);
+}
+
+/* ================================
+   SIGNATURE
+================================ */
+
+.signature {
+  position: absolute;
+  top: 98%;
+  left: 115px;
+  margin-top: -500px;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  color: rgba(60,40,80,0.85);
+  opacity: 0;
+  animation:
+    signatureFade 2s ease 5s forwards,
+    textBob 4s ease-in-out infinite 6s;
+  will-change: transform;
+}
+
+body.night .signature {
+  color: rgba(255,235,255,0.85);
+}
+
+/* ================================
+   KEYFRAMES
+================================ */
+
+@keyframes subtitleFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes signatureFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes textBob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(4px); }
+}
+
+/* =================================
+SCROLL PROMPT
+================================= */
+
+.scroll-prompt {
+  position: fixed;
+  left: 50%;
+  bottom: 42px;
+  transform: translateX(-50%);
+  z-index: 14;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 248, 244, 0.95);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-shadow: 0 4px 12px rgba(60, 34, 78, 0.22);
+  opacity: 0;
+  animation: promptFadeIn 1.4s ease 4s forwards,
+           promptBob 2.2s ease-in-out infinite 5.4s;
+  pointer-events: none;
+}
+
+.scroll-prompt.hidden {
+  opacity: 0 !important;
+  transition: opacity 0.35s ease;
+  animation: none;
+}
+
+.scroll-arrow {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+@keyframes promptFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes promptBob {
+  0%,100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(8px);
+  }
+}
+
+/* ================================
+   CARDS
+================================ */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 34px 48px;
+  width: min(1500px, 100%);
+  margin: 0 auto;
+  padding-top: 210px;
+}
+
+.cards-section {
+  position: relative;
+  z-index: 20;
+  width: min(1680px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+}
+
+.card {
+  text-decoration: none;
+  color: #fff8ef;
+  height: 300px;
+  padding: 26px 22px;
+  border-radius: 30px;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 26px 40px rgba(73, 45, 92, 0.22),
+    0 10px 18px rgba(73, 45, 92, 0.14),
+    inset 0 2px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -14px 24px rgba(61, 28, 83, 0.18);
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    filter 0.28s ease;
+  animation: cardBob 7s ease-in-out infinite;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border-radius: 22px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.08) 28%,
+      rgba(255, 255, 255, 0) 48%
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
+  background: var(--card-fill);
+  z-index: 0;
+}
+
+.card:hover {
+  transform: translateY(-12px) scale(1.03) rotateX(4deg);
+  animation-play-state: paused;
+  box-shadow:
+    0 34px 52px rgba(73, 45, 92, 0.28),
+    0 14px 24px rgba(73, 45, 92, 0.16),
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -16px 28px rgba(61, 28, 83, 0.22);
+  filter: brightness(1.04) saturate(1.03);
+}
+
+@keyframes cardBob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ================================
+   PROJECTS MENU GIF
+================================ */
+
+.projects-menu{
+  animation: floatMenu 6s ease-in-out infinite;
+  display:block;
+  margin:0 auto -450px auto;
+  width:420px;
+  max-width:80vw;
+  height:auto;
+  pointer-events:none;
+}
+
+@keyframes floatMenu{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-6px); }
+}
+
+/* ================================
+   DAY MODE CARD COLORS
+================================ */
+
+.card-far-left {
+  --card-fill: transparent;
+}
+.card-inner-left {
+  --card-fill: transparent;
+}
+
+.card-middle {
+  --card-fill: transparent;
+}
+
+.card-inner-right {
+  --card-fill: transparent;
+}
+
+.card-far-right {
+  --card-fill: transparent;
+}
+
+/* ================================
+   NIGHT MODE CARD COLORS
+================================ */
+
+body.night .card-far-left {
+  --card-fill: transparent;
+}
+
+body.night .card-inner-left {
+  --card-fill: transparent;
+}
+
+body.night .card-middle {
+  --card-fill: transparent;
+}
+
+body.night .card-inner-right {
+  --card-fill: transparent;
+}
+
+body.night .card-far-right {
+  --card-fill: transparent;
+}
+
+/* ================================
+   ICONS / TEXT
+================================ */
+
+.icon{
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 120px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 4px 10px rgba(70, 47, 87, 0.18));
+  top: 0.5px;
+  overflow: visible;
+}
+
+.card .icon {
+  transition:
+    opacity 0.12s ease,
+    transform 0.12s ease,
+    filter 0.2s ease;
+}
+
+.card:hover .icon {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.96);
+}
+
+.icon img{
+  display: block;
+  height: auto;
+  object-fit: contain;
+  image-rendering: auto;
+  -ms-interpolation-mode: bicubic;
+  transform: translateZ(0);
+}
+
+.heart-icon{
+  width: 180px;
+}
+
+.book-icon{
+  width: 200px;
+}
+
+.compass-icon{
+  width: 152px;
+}
+
+.notepad-icon{
+  width: 190px;
+}
+
+.controller-icon{
+  width: 200px;
+}
+
+.soon-icon{
+  width: 290px;
+}
+
+
+.card h3 {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  max-width: 12ch;
+  font-size: 2.5rem;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 10px rgba(35, 20, 42, 0.16);
+  top: 0.5px;
+}
+
+.card-description {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.35;
+  color: #fff8ef;
+  opacity: 0;
+  transform: translate(-50%, -45%);
+  transition:
+    opacity 0.18s ease 0.05s,
+    transform 0.18s ease 0.05s;
+  pointer-events: none;
+}
+
+.card:hover .card-description {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.card:hover .icon,
+.card:hover h3 {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.icon,
+.card h3 {
+  transition:
+    opacity 0.12s ease,
+    transform 0.12s ease;
+}
+
+/* ================================
+   CONTENT PANELS
+================================ */
+
+.section {
+  display: none;
+  padding: 30px 28px;
+  border-radius: 34px;
+  background: rgba(255, 247, 238, 0.68);
+  border: 3px solid rgba(105, 84, 122, 0.22);
+  box-shadow:
+    0 16px 38px rgba(74, 49, 94, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(6px);
+}
+
+.section.active {
+  display: block;
+  animation: sectionFade 0.35s ease;
+}
+
+@keyframes sectionFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h2 {
+  margin: 0 0 10px;
+  color: #453256;
+  font-size: clamp(1.9rem, 3vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+p {
+  margin: 0;
+  color: #58456a;
+  font-size: 1.08rem;
+  line-height: 1.7;
+}
+
+/* ================================
+   NIGHT TEXT / PANELS
+================================ */
+
+body.night .hero h1,
+body.night h2 {
+  color: #f7e8ff;
+  transition: color 1.8s ease-in-out;
+}
+
+body.night p {
+  color: #f2dff5;
+  transition: color 1.8s ease-in-out;
+}
+
+body.night .section {
+  background: rgba(46, 34, 73, 0.55);
+  border-color: rgba(232, 214, 255, 0.12);
+  box-shadow:
+    0 16px 38px rgba(16, 12, 32, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition:
+    background 1.8s ease-in-out,
+    border-color 1.8s ease-in-out,
+    box-shadow 1.8s ease-in-out;
+}
+
+body.night .card {
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 20px 42px rgba(10, 8, 20, 0.42),
+    0 0 22px rgba(151, 120, 255, 0.16),
+    inset 0 2px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -14px 24px rgba(8, 6, 18, 0.28);
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 640px) {
+  .hero {
+    padding-top: 28px;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .card {
+    min-height: 160px;
+    border-radius: 32px;
+  }
+
+  .section {
+    padding: 24px 20px;
+    border-radius: 28px;
+  }
+
+  .moon {
+    right: 30px;
+    width: 120px;
+  }
+}

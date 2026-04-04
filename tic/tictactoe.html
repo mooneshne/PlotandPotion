@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plot and Potion | Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <p class="eyebrow">Minigames</p>
+      <h1>Tic Tac Toe</h1>
+      <p id="status">Player X's turn</p>
+
+     <div class="scoreboard">
+  <div class="score-pill">
+    <span class="score-label">X</span>
+    <span id="scoreX">0</span>
+  </div>
+
+  <div class="score-pill">
+    <span class="score-label">Draws</span>
+    <span id="scoreDraws">0</span>
+  </div>
+
+  <div class="score-pill">
+    <span class="score-label">O</span>
+    <span id="scoreO">0</span>
+  </div>
+</div>
+
+
+      <div id="board" aria-label="Tic Tac Toe board">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+      </div>
+
+      <button id="modeToggle">Mode: 2 Player</button>
+      <button id="reset">Restart</button>
+    </main>
+      <button id="backToGames">Minigames</button>
+
+    <script src="game.js"></script>
+  </body>
+</html>
