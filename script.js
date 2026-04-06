@@ -112,51 +112,6 @@ if (isMainPage) {
   }
 }
 
-// ================================
-// APPLY SAVED THEME
-// ================================
-
-function applySavedTheme() {
-  const savedTheme = localStorage.getItem("theme") || "day";
-  const shouldBeNight = savedTheme === "night";
-
-  body.classList.toggle("night", shouldBeNight);
-
-  if (toggleButton) {
-    toggleButton.textContent = shouldBeNight ? "Day Mode" : "Night Mode";
-    toggleButton.setAttribute("aria-pressed", shouldBeNight ? "true" : "false");
-  }
-
-  if (isMainPage) {
-      const returning = sessionStorage.getItem("hasSeenIntro")==="true";
-    if (shouldBeNight) {
-      randomizeBalloonStart();
-
-      if (morningSound) {
-        morningSound.pause();
-        morningSound.currentTime = 0;
-      }
-
-      if (nightSound) {
-        nightSound.volume = 0.5;
-      }
-    } else {
-      if (nightSound) {
-        nightSound.pause();
-        nightSound.currentTime = 0;
-      }
-      if (returning && morningSound) {
-        fadeIn(morningSound, 0.5, 1500);
-      }
-    }
-  }
-}
-
-applySavedTheme();
-
-window.addEventListener("pageshow", (event) => {
-  if (event) applySavedTheme();
-});
 
 // ================================
 // DAY / NIGHT TOGGLE
